@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Converter - My Web Projects</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-blue: #2563eb;
+        --dark-blue: #1d4ed8;
+        --light-blue: #3b82f6;
+        --blue-50: #eff6ff;
+        --blue-100: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-900: #111827;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: linear-gradient(135deg, var(--blue-50) 0%, #ffffff 100%);
+        min-height: 100vh;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--blue-100);
+        z-index: 1000;
+        padding: 1rem 0;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-primary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-blue);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .main-content {
+        margin-top: 100px;
+        padding: 2rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .converter-container {
+        background: white;
+        border-radius: 12px;
+        padding: 3rem;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+        border: 1px solid var(--blue-100);
+      }
+
+      .converter-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .converter-header h1 {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+      }
+
+      .converter-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+      }
+
+      .unit-type-selector {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .unit-type-btn {
+        padding: 0.75rem 1.5rem;
+        border: 2px solid var(--blue-100);
+        border-radius: 8px;
+        background: white;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .unit-type-btn.active {
+        background: var(--primary-blue);
+        color: white;
+        border-color: var(--primary-blue);
+      }
+
+      .unit-type-btn:hover {
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+      }
+
+      .unit-type-btn.active:hover {
+        color: white;
+      }
+
+      .converter-form {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 2rem;
+        align-items: end;
+        margin-bottom: 2rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 0.75rem;
+        border: 2px solid var(--blue-100);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+      }
+
+      .swap-btn {
+        padding: 0.75rem;
+        border: none;
+        border-radius: 50%;
+        background: var(--primary-blue);
+        color: white;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .swap-btn:hover {
+        background: var(--dark-blue);
+        transform: rotate(180deg);
+      }
+
+      .result-display {
+        background: var(--blue-50);
+        border: 2px solid var(--blue-100);
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        display: none;
+      }
+
+      .result-display.show {
+        display: block;
+      }
+
+      .result-display h3 {
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+      }
+
+      .error-message {
+        color: #dc2626;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .back-btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-blue);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: white;
+          flex-direction: column;
+          padding: 1rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          gap: 1rem;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .converter-form {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .swap-btn {
+          justify-self: center;
+        }
+
+        .converter-container {
+          padding: 2rem;
+        }
+
+        .converter-header h1 {
+          font-size: 2rem;
+        }
+
+        .nav-container {
+          padding: 0 1rem;
+        }
+
+        .main-content {
+          padding: 1rem;
+          margin-top: 90px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">My Web Projects</a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="converter.html" class="active">Converter</a></li>
+          <li><a href="grading.html">Grading</a></li>
+          <li><a href="calculator.html">Calculator Change</a></li>
+          <li><a href="geolocation.html">Geolocation</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <div class="converter-container">
+        <div class="converter-header">
+          <h1>Unit Converter</h1>
+          <p>Convert between Length, Temperature, and Area units</p>
+        </div>
+
+        <div class="unit-type-selector">
+          <button
+            class="unit-type-btn active"
+            id="lengthBtn"
+            onclick="selectUnitType('length')"
+          >
+            Length
+          </button>
+          <button
+            class="unit-type-btn"
+            id="temperatureBtn"
+            onclick="selectUnitType('temperature')"
+          >
+            Temperature
+          </button>
+          <button
+            class="unit-type-btn"
+            id="areaBtn"
+            onclick="selectUnitType('area')"
+          >
+            Area
+          </button>
+        </div>
+
+        <div class="converter-form">
+          <div class="form-group">
+            <label for="fromValue">From:</label>
+            <input
+              type="number"
+              id="fromValue"
+              placeholder="Enter value"
+              step="any"
+            />
+            <select id="fromUnit"></select>
+            <div class="error-message" id="errorMsg"></div>
+          </div>
+
+          <button class="swap-btn" onclick="swapUnits()" title="Swap units">
+            ⇄
+          </button>
+
+          <div class="form-group">
+            <label for="toValue">To:</label>
+            <input type="number" id="toValue" placeholder="Result" readonly />
+            <select id="toUnit"></select>
+          </div>
+        </div>
+
+        <div class="result-display" id="result">
+          <h3>Conversion Result:</h3>
+          <div id="resultValue"></div>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Home</a>
+      </div>
+    </main>
+
+    <script>
+      const unitDefinitions = {
+        length: {
+          baseUnit: "meter",
+          units: {
+            millimeter: { factor: 0.001, symbol: "mm" },
+            centimeter: { factor: 0.01, symbol: "cm" },
+            meter: { factor: 1, symbol: "m" },
+            kilometer: { factor: 1000, symbol: "km" },
+            inch: { factor: 0.0254, symbol: "in" },
+            foot: { factor: 0.3048, symbol: "ft" },
+            yard: { factor: 0.9144, symbol: "yd" },
+            mile: { factor: 1609.344, symbol: "mi" },
+          },
+        },
+        temperature: {
+          baseUnit: "celsius",
+          units: {
+            celsius: { symbol: "°C" },
+            fahrenheit: { symbol: "°F" },
+            kelvin: { symbol: "K" },
+          },
+        },
+        area: {
+          baseUnit: "square_meter",
+          units: {
+            square_millimeter: { factor: 0.000001, symbol: "mm²" },
+            square_centimeter: { factor: 0.0001, symbol: "cm²" },
+            square_meter: { factor: 1, symbol: "m²" },
+            square_kilometer: { factor: 1000000, symbol: "km²" },
+            square_inch: { factor: 0.00064516, symbol: "in²" },
+            square_foot: { factor: 0.092903, symbol: "ft²" },
+            square_yard: { factor: 0.836127, symbol: "yd²" },
+            acre: { factor: 4046.86, symbol: "ac" },
+            hectare: { factor: 10000, symbol: "ha" },
+          },
+        },
+      };
+
+      let currentUnitType = "length";
+
+      function toggleMobileMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+
+      function selectUnitType(type) {
+        currentUnitType = type;
+
+        // Update button states
+        document.querySelectorAll(".unit-type-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document.getElementById(type + "Btn").classList.add("active");
+
+        populateUnitOptions();
+        clearResults();
+      }
+
+      function populateUnitOptions() {
+        const fromUnit = document.getElementById("fromUnit");
+        const toUnit = document.getElementById("toUnit");
+        fromUnit.innerHTML = "";
+        toUnit.innerHTML = "";
+
+        const units = unitDefinitions[currentUnitType].units;
+        const unitKeys = Object.keys(units);
+
+        unitKeys.forEach((unitKey, index) => {
+          const unitData = units[unitKey];
+          const displayName = `${unitData.symbol} (${formatUnitName(unitKey)})`;
+
+          fromUnit.add(new Option(displayName, unitKey));
+          toUnit.add(new Option(displayName, unitKey));
+        });
+
+        if (unitKeys.length > 1) {
+          toUnit.selectedIndex = 1;
+        }
+      }
+
+      function formatUnitName(unitName) {
+        return unitName
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (l) => l.toUpperCase());
+      }
+
+      function swapUnits() {
+        const fromUnit = document.getElementById("fromUnit");
+        const toUnit = document.getElementById("toUnit");
+        const fromValue = document.getElementById("fromValue");
+        const toValue = document.getElementById("toValue");
+
+        [fromUnit.value, toUnit.value] = [toUnit.value, fromUnit.value];
+        [fromValue.value, toValue.value] = [toValue.value, fromValue.value];
+
+        convertUnits();
+      }
+
+      function convertUnits() {
+        const fromValueInput = document.getElementById("fromValue");
+        const fromValue = parseFloat(fromValueInput.value);
+        const fromUnit = document.getElementById("fromUnit").value;
+        const toUnit = document.getElementById("toUnit").value;
+        const errorMsg = document.getElementById("errorMsg");
+
+        if (isNaN(fromValue) || fromValueInput.value.trim() === "") {
+          showError("⚠ Please enter a valid number.");
+          clearResults();
+          return;
+        }
+
+        if (
+          (currentUnitType === "length" || currentUnitType === "area") &&
+          fromValue < 0
+        ) {
+          showError("⚠ Negative values are not allowed for length/area.");
+          clearResults();
+          return;
+        }
+
+        hideError();
+
+        let result;
+        if (currentUnitType === "temperature") {
+          result = convertTemperature(fromValue, fromUnit, toUnit);
+        } else {
+          result = convertWithFactors(fromValue, fromUnit, toUnit);
+        }
+
+        document.getElementById("toValue").value = formatResult(result);
+        displayResult(fromValue, fromUnit, result, toUnit);
+      }
+
+      function convertWithFactors(value, fromUnit, toUnit) {
+        const units = unitDefinitions[currentUnitType].units;
+        return (value * units[fromUnit].factor) / units[toUnit].factor;
+      }
+
+      function convertTemperature(value, fromUnit, toUnit) {
+        let celsius;
+        switch (fromUnit) {
+          case "celsius":
+            celsius = value;
+            break;
+          case "fahrenheit":
+            celsius = ((value - 32) * 5) / 9;
+            break;
+          case "kelvin":
+            celsius = value - 273.15;
+            break;
+        }
+
+        switch (toUnit) {
+          case "celsius":
+            return celsius;
+          case "fahrenheit":
+            return (celsius * 9) / 5 + 32;
+          case "kelvin":
+            return celsius + 273.15;
+        }
+      }
+
+      function formatResult(result) {
+        return parseFloat(result.toFixed(8)).toString();
+      }
+
+      function displayResult(fromValue, fromUnit, result, toUnit) {
+        const resultElement = document.getElementById("result");
+        const resultValueElement = document.getElementById("resultValue");
+        const fromSymbol =
+          unitDefinitions[currentUnitType].units[fromUnit].symbol;
+        const toSymbol = unitDefinitions[currentUnitType].units[toUnit].symbol;
+
+        resultValueElement.innerHTML = `${fromValue} ${fromSymbol} = ${formatResult(
+          result
+        )} ${toSymbol}`;
+        resultElement.classList.add("show");
+      }
+
+      function clearResults() {
+        document.getElementById("toValue").value = "";
+        document.getElementById("result").classList.remove("show");
+      }
+
+      function showError(message) {
+        const errorMsg = document.getElementById("errorMsg");
+        errorMsg.textContent = message;
+        errorMsg.classList.add("show");
+      }
+
+      function hideError() {
+        document.getElementById("errorMsg").classList.remove("show");
+      }
+
+      // Initialize the converter
+      document.addEventListener("DOMContentLoaded", function () {
+        populateUnitOptions();
+
+        // Add event listeners
+        document
+          .getElementById("fromValue")
+          .addEventListener("input", convertUnits);
+        document
+          .getElementById("fromUnit")
+          .addEventListener("change", convertUnits);
+        document
+          .getElementById("toUnit")
+          .addEventListener("change", convertUnits);
+      });
+    </script>
+  </body>
+</html>

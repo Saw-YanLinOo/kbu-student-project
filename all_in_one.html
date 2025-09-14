@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Projects</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-blue: #2563eb;
+            --dark-blue: #1d4ed8;
+            --light-blue: #3b82f6;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-900: #111827;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--blue-50) 0%, #ffffff 100%);
+        }
+        
+        /* Header & Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--blue-100);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-blue);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: 100vh;
+        }
+        
+        .section {
+            display: none;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        /* Home Section */
+        .home-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--dark-blue);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+            border: 1px solid var(--blue-100);
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15);
+        }
+        
+        .project-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Forms and Inputs */
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+            border: 1px solid var(--blue-100);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--blue-100);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+        
+        .result-display {
+            background: var(--blue-50);
+            border: 2px solid var(--blue-100);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .result-display h3 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                gap: 1rem;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 2rem 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-2 {
+            margin-top: 1rem;
+        }
+        
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .swap-btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .swap-btn:hover {
+            background: var(--dark-blue);
+            transform: rotate(180deg);
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .swap-btn {
+                justify-self: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">My Web Projects</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active" onclick="showSection('home')">Home</a></li>
+                <li><a href="#resume" class="nav-link" onclick="showSection('resume')">Resume</a></li>
+                <li><a href="#converter" class="nav-link" onclick="showSection('converter')">Converter</a></li>
+                <li><a href="#grading" class="nav-link" onclick="showSection('grading')">Grading</a></li>
+                <li><a href="#calculator" class="nav-link" onclick="showSection('calculator')">Calculator Change</a></li>
+                <li><a href="#geolocation" class="nav-link" onclick="showSection('geolocation')">Geolocation</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active home-section">
+            <div class="hero-content">
+                <h1>My Web Projects</h1>
+                <!-- <p>A collection of useful web applications built with modern technologies. Explore tools for unit conversion, grade calculation, currency exchange, and location tracking.</p> -->
+                <div class="cta-buttons">
+                    <a href="#resume" class="btn btn-primary" onclick="showSection('resume')">View Resume</a>
+                    <a href="#converter" class="btn btn-secondary" onclick="showSection('converter')">Explore Tools</a>
+                </div>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>Unit Converter</h3>
+                    <!-- <p>Convert between various units including length, temperature, and area measurements with precision and ease.</p> -->
+                    <a href="#converter" class="btn btn-primary" onclick="showSection('converter')">Try Converter</a>
+                </div>
+                <div class="project-card">
+                    <h3>Grade Calculator</h3>
+                    <p>Calculate academic grades with letter grades (A, B, C, D) based on numerical input scores.</p>
+                    <a href="#grading" class="btn btn-primary" onclick="showSection('grading')">Calculate Grades</a>
+                </div>
+                <div class="project-card">
+                    <h3>Change Calculator</h3>
+                    <p>Calculate the optimal change breakdown for any amount in Thai Baht with various denominations.</p>
+                    <a href="#calculator" class="btn btn-primary" onclick="showSection('calculator')">Calculate Change</a>
+                </div>
+                <div class="project-card">
+                    <h3>Location Tracker</h3>
+                    <p>Real-time GPS location tracking with distance calculation to Kasem Bundit University.</p>
+                    <a href="#geolocation" class="btn btn-primary" onclick="showSection('geolocation')">Track Location</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Section -->
+        <section id="resume" class="section">
+            <div class="form-container">
+                <h2 class="text-center mb-2">My Resume</h2>
+                <div style="text-align: left; line-height: 1.8;">
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Personal Information</h3>
+                        <p><strong>Name:</strong> Saw Yan Lin Oo</p>
+                        <p><strong>GitHub:</strong> <a href="https://github.com/Saw-YanLinOo" target="_blank" style="color: var(--primary-blue);">github.com/Saw-YanLinOo</a></p>
+                        <p><strong>Email:</strong> Contact via GitHub</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Skills & Technologies</h3>
+                        <p><strong>Programming Languages:</strong> JavaScript, HTML, CSS, Python</p>
+                        <p><strong>Web Technologies:</strong> Frontend Development, Responsive Design</p>
+                        <p><strong>Tools & Frameworks:</strong> Git, GitHub, Modern CSS, Vanilla JavaScript</p>
+                        <p><strong>Areas of Interest:</strong> Web Development, UI/UX Design, Utility Applications</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Projects</h3>
+                        <p><strong>Web Utility Collection:</strong> Developed multiple web-based utility tools including unit converters, calculators, and location tracking applications.</p>
+                        <p><strong>Modern Web Design:</strong> Created responsive and accessible web interfaces using contemporary design principles.</p>
+                        <p><strong>JavaScript Applications:</strong> Built interactive applications with real-time calculations and GPS integration.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Education & Learning</h3>
+                        <p>Continuous learning in web development technologies and best practices through hands-on project development and open-source contributions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Converter Section -->
+        <section id="converter" class="section">
+            <div class="form-container">
+                <h2 class="text-center mb-2">Unit Converter</h2>
+                
+                <div class="form-group">
+                    <label>Conversion Type:</label>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;">
+                        <button class="btn btn-primary" id="lengthBtn" onclick="selectConversionType('length')">Length</button>
+                        <button class="btn btn-secondary" id="tempBtn" onclick="selectConversionType('temperature')">Temperature</button>
+                        <button class="btn btn-secondary" id="areaBtn" onclick="selectConversionType('area')">Area</button>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="fromValue">From:</label>
+                        <input type="number" id="fromValue" placeholder="Enter value" step="any" oninput="convertValue()">
+                        <select id="fromUnit" onchange="convertValue()"></select>
+                        <div class="error-message" id="converterError"></div>
+                    </div>
+                    
+                    <button class="swap-btn" onclick="swapConversionUnits()" title="Swap units">⇄</button>
+                    
+                    <div class="form-group">
+                        <label for="toValue">To:</label>
+                        <input type="number" id="toValue" placeholder="Result" readonly>
+                        <select id="toUnit" onchange="convertValue()"></select>
+                    </div>
+                </div>
+                
+                <div class="result-display" id="conversionResult" style="display: none;">
+                    <h3>Conversion Result</h3>
+                    <p id="conversionResultText"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grading Section -->
+        <section id="grading" class="section">
+            <div class="form-container">
+                <h2 class="text-center mb-2">Grade Calculator</h2>
+                
+                <div class="form-group">
+                    <label for="scoreInput">Enter Score (0-100):</label>
+                    <input type="number" id="scoreInput" placeholder="Enter your score" min="0" max="100">
+                    <div class="error-message" id="gradingError"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="calculateGrade()" style="width: 100%;">Calculate Grade</button>
+                
+                <div class="result-display" id="gradingResult" style="display: none;">
+                    <h3>Your Grade</h3>
+                    <p id="gradingResultText"></p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <p><strong>Grading Scale:</strong></p>
+                        <p>A: 90-100 | B: 80-89 | C: 70-79 | D: 60-69 | F: Below 60</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Change Section -->
+        <section id="calculator" class="section">
+            <div class="form-container">
+                <h2 class="text-center mb-2">Change Calculator</h2>
+                
+                <div class="form-group">
+                    <label for="changeAmount">Enter Amount (฿):</label>
+                    <input type="number" id="changeAmount" placeholder="Enter amount in Thai Baht" min="1">
+                    <div class="error-message" id="calculatorError"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="calculateChange()" style="width: 100%;">Calculate Change</button>
+                
+                <div class="result-display" id="calculatorResult" style="display: none;">
+                    <h3>Change Breakdown</h3>
+                    <div id="calculatorResultText"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Geolocation Section -->
+        <section id="geolocation" class="section">
+            <div class="form-container">
+                <h2 class="text-center mb-2">Distance to KBU</h2>
+                <p class="text-center" style="color: var(--text-secondary); margin-bottom: 2rem;">
+                    Calculate your distance to Kasem Bundit University
+                </p>
+                
+                <button class="btn btn-primary" onclick="getCurrentLocation()" id="locationBtn" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+                    📍 Get My Location
+                </button>
+                
+                <div id="locationLoading" style="display: none; text-align: center; margin: 2rem 0;">
+                    <p>📡 Acquiring GPS coordinates...</p>
+                </div>
+                
+                <div class="result-display" id="locationResult" style="display: none;">
+                    <h3>Distance Result</h3>
+                    <div id="locationResultText"></div>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);" id="coordinatesInfo"></div>
+                </div>
+                
+                <div class="error-message" id="locationError" style="display: none; text-align: center; margin-top: 1rem;">
+                    <h3>🚫 Location Access Required</h3>
+                    <p>Please enable location permissions and try again.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showSection('${sectionId}')"]`).classList.add('active');
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+        }
+        
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Unit Converter functionality
+        const conversionData = {
+            length: {
+                units: {
+                    'mm': { name: 'Millimeter', factor: 0.001 },
+                    'cm': { name: 'Centimeter', factor: 0.01 },
+                    'm': { name: 'Meter', factor: 1 },
+                    'km': { name: 'Kilometer', factor: 1000 },
+                    'in': { name: 'Inch', factor: 0.0254 },
+                    'ft': { name: 'Foot', factor: 0.3048 },
+                    'yd': { name: 'Yard', factor: 0.9144 },
+                    'mi': { name: 'Mile', factor: 1609.344 }
+                }
+            },
+            temperature: {
+                units: {
+                    'celsius': { name: 'Celsius (°C)', factor: 1 },
+                    'fahrenheit': { name: 'Fahrenheit (°F)', factor: 1 },
+                    'kelvin': { name: 'Kelvin (K)', factor: 1 }
+                }
+            },
+            area: {
+                units: {
+                    'mm2': { name: 'Square Millimeter', factor: 0.000001 },
+                    'cm2': { name: 'Square Centimeter', factor: 0.0001 },
+                    'm2': { name: 'Square Meter', factor: 1 },
+                    'km2': { name: 'Square Kilometer', factor: 1000000 },
+                    'in2': { name: 'Square Inch', factor: 0.00064516 },
+                    'ft2': { name: 'Square Foot', factor: 0.092903 },
+                    'acre': { name: 'Acre', factor: 4046.86 }
+                }
+            }
+        };
+        
+        let currentConversionType = 'length';
+        
+        function selectConversionType(type) {
+            currentConversionType = type;
+            
+            // Update button states
+            document.querySelectorAll('#lengthBtn, #tempBtn, #areaBtn').forEach(btn => {
+                btn.className = 'btn btn-secondary';
+            });
+            document.getElementById(type === 'length' ? 'lengthBtn' : type === 'temperature' ? 'tempBtn' : 'areaBtn').className = 'btn btn-primary';
+            
+            // Update unit options
+            updateUnitOptions();
+            
+            // Clear values
+            document.getElementById('fromValue').value = '';
+            document.getElementById('toValue').value = '';
+            document.getElementById('conversionResult').style.display = 'none';
+        }
+        
+        function updateUnitOptions() {
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            const units = conversionData[currentConversionType].units;
+            
+            fromUnit.innerHTML = '';
+            toUnit.innerHTML = '';
+            
+            Object.keys(units).forEach((key, index) => {
+                const option1 = new Option(units[key].name, key);
+                const option2 = new Option(units[key].name, key);
+                fromUnit.appendChild(option1);
+                toUnit.appendChild(option2);
+                
+                if (index === 1) toUnit.selectedIndex = 1;
+            });
+        }
+        
+        function convertValue() {
+            const fromValue = parseFloat(document.getElementById('fromValue').value);
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            const errorElement = document.getElementById('converterError');
+            
+            if (isNaN(fromValue) || fromValue === '') {
+                errorElement.textContent = '⚠ Please enter a valid number.';
+                errorElement.style.display = 'block';
+                document.getElementById('conversionResult').style.display = 'none';
+                return;
+            }
+            
+            if (fromValue < 0 && currentConversionType !== 'temperature') {
+                errorElement.textContent = '⚠ Negative values not allowed for this unit type.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            errorElement.style.display = 'none';
+            
+            let result;
+            if (currentConversionType === 'temperature') {
+                result = convertTemperature(fromValue, fromUnit, toUnit);
+            } else {
+                const units = conversionData[currentConversionType].units;
+                result = (fromValue * units[fromUnit].factor) / units[toUnit].factor;
+            }
+            
+            document.getElementById('toValue').value = result.toFixed(6);
+            document.getElementById('conversionResult').style.display = 'block';
+            document.getElementById('conversionResultText').textContent = 
+                `${fromValue} ${conversionData[currentConversionType].units[fromUnit].name} = ${result.toFixed(6)} ${conversionData[currentConversionType].units[toUnit].name}`;
+        }
+        
+        function convertTemperature(value, from, to) {
+            let celsius;
+            if (from === 'celsius') celsius = value;
+            else if (from === 'fahrenheit') celsius = (value - 32) * 5/9;
+            else if (from === 'kelvin') celsius = value - 273.15;
+            
+            if (to === 'celsius') return celsius;
+            else if (to === 'fahrenheit') return celsius * 9/5 + 32;
+            else if (to === 'kelvin') return celsius + 273.15;
+        }
+        
+        function swapConversionUnits() {
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            const fromValue = document.getElementById('fromValue');
+            const toValue = document.getElementById('toValue');
+            
+            [fromUnit.value, toUnit.value] = [toUnit.value, fromUnit.value];
+            [fromValue.value, toValue.value] = [toValue.value, fromValue.value];
+            
+            convertValue();
+        }
+
+        // Grade Calculator functionality
+        function calculateGrade() {
+            const score = parseFloat(document.getElementById('scoreInput').value);
+            const errorElement = document.getElementById('gradingError');
+            const resultElement = document.getElementById('gradingResult');
+            const resultText = document.getElementById('gradingResultText');
+            
+            if (isNaN(score) || score < 0 || score > 100) {
+                errorElement.textContent = '⚠ Please enter a valid score between 0 and 100.';
+                errorElement.style.display = 'block';
+                resultElement.style.display = 'none';
+                return;
+            }
+            
+            errorElement.style.display = 'none';
+            
+            let grade, description;
+            if (score >= 90) {
+                grade = 'A';
+                description = 'Excellent';
+            } else if (score >= 80) {
+                grade = 'B';
+                description = 'Good';
+            } else if (score >= 70) {
+                grade = 'C';
+                description = 'Satisfactory';
+            } else if (score >= 60) {
+                grade = 'D';
+                description = 'Needs Improvement';
+            } else {
+                grade = 'F';
+                description = 'Failing';
+            }
+            
+            resultText.innerHTML = `<strong>Score: ${score}</strong><br><strong>Grade: ${grade}</strong><br><em>${description}</em>`;
+            resultElement.style.display = 'block';
+        }
+
+        // Change Calculator functionality
+        function calculateChange() {
+            const amount = parseInt(document.getElementById('changeAmount').value);
+            const errorElement = document.getElementById('calculatorError');
+            const resultElement = document.getElementById('calculatorResult');
+            const resultText = document.getElementById('calculatorResultText');
+            
+            if (isNaN(amount) || amount <= 0) {
+                errorElement.textContent = '⚠ Please enter a valid positive amount.';
+                errorElement.style.display = 'block';
+                resultElement.style.display = 'none';
+                return;
+            }
+            
+            errorElement.style.display = 'none';
+        }

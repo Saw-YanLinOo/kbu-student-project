@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Web Projects</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-blue: #2563eb;
+        --dark-blue: #1d4ed8;
+        --light-blue: #3b82f6;
+        --blue-50: #eff6ff;
+        --blue-100: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-900: #111827;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: linear-gradient(135deg, var(--blue-50) 0%, #ffffff 100%);
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--blue-100);
+        z-index: 1000;
+        padding: 1rem 0;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        text-decoration: none;
+        letter-spacing: -0.5px;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--primary-blue);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-primary);
+      }
+
+      .main-content {
+        margin-top: 80px;
+        min-height: 100vh;
+      }
+
+      .hero-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 90vh;
+        text-align: center;
+        padding: 4rem 2rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--dark-blue)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.1;
+      }
+
+      .hero-content p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        max-width: 600px;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 4rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 0.95rem;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--primary-blue);
+        border: 2px solid var(--primary-blue);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .project-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+        border: 1px solid var(--blue-100);
+        transition: all 0.3s ease;
+        text-align: left;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15);
+      }
+
+      .project-card h3 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .project-card p {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: white;
+          flex-direction: column;
+          padding: 1rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          gap: 1rem;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .hero-content h1 {
+          font-size: 2.5rem;
+        }
+
+        .nav-container {
+          padding: 0 1rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .hero-section {
+          padding: 2rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">My Web Projects</a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="converter.html">Converter</a></li>
+          <li><a href="grading.html">Grading</a></li>
+          <li><a href="calculator.html">Calculator Change</a></li>
+          <li><a href="geolocation.html">Geolocation</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>My Web Projects</h1>
+          <p>
+            A collection of useful web applications built with modern
+            technologies. Explore tools for unit conversion, grade calculation,
+            currency exchange, and location tracking.
+          </p>
+          <div class="cta-buttons">
+            <a href="resume.html" class="btn btn-primary">View Resume</a>
+            <a href="converter.html" class="btn btn-secondary">Explore Tools</a>
+          </div>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card">
+            <h3>Unit Converter</h3>
+            <p>
+              Convert between various units including length, temperature, and
+              area measurements with precision and ease.
+            </p>
+            <a href="converter.html" class="btn btn-primary">Try Converter</a>
+          </div>
+          <div class="project-card">
+            <h3>Grade Calculator</h3>
+            <p>
+              Calculate academic grades with letter grades (A, B, C, D) based on
+              numerical input scores.
+            </p>
+            <a href="grading.html" class="btn btn-primary">Calculate Grades</a>
+          </div>
+          <div class="project-card">
+            <h3>Change Calculator</h3>
+            <p>
+              Calculate the optimal change breakdown for any amount in Thai Baht
+              with various denominations.
+            </p>
+            <a href="calculator.html" class="btn btn-primary"
+              >Calculate Change</a
+            >
+          </div>
+          <div class="project-card">
+            <h3>Location Tracker</h3>
+            <p>
+              Real-time GPS location tracking with distance calculation to Kasem
+              Bundit University.
+            </p>
+            <a href="geolocation.html" class="btn btn-primary"
+              >Track Location</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function toggleMobileMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

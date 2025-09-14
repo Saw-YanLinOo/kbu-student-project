@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Change Calculator - My Web Projects</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-blue: #2563eb;
+        --dark-blue: #1d4ed8;
+        --light-blue: #3b82f6;
+        --blue-50: #eff6ff;
+        --blue-100: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-900: #111827;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --danger-red: #dc2626;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: linear-gradient(135deg, var(--blue-50) 0%, #ffffff 100%);
+        min-height: 100vh;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--blue-100);
+        z-index: 1000;
+        padding: 1rem 0;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-primary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-blue);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .main-content {
+        margin-top: 100px;
+        padding: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .calculator-container {
+        background: white;
+        border-radius: 12px;
+        padding: 3rem;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+        border: 1px solid var(--blue-100);
+      }
+
+      .calculator-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .calculator-header h1 {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+      }
+
+      .calculator-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--blue-100);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+      }
+
+      .calculate-btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        background: var(--primary-blue);
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+      }
+
+      .calculate-btn:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+      }
+
+      .result-display {
+        background: var(--blue-50);
+        border: 2px solid var(--blue-100);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        display: none;
+      }
+
+      .result-display.show {
+        display: block;
+      }
+
+      .result-display h3 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      .change-breakdown {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .note-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 2px solid var(--blue-100);
+        text-align: center;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .note-item .count {
+        font-size: 1.2rem;
+        color: var(--primary-blue);
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      .note-item .denomination {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .error-message {
+        color: var(--danger-red);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        background: #fee2e2;
+        border-radius: 4px;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .currency-info {
+        background: var(--gray-50);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .currency-info h4 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+      }
+
+      .denominations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .back-btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-blue);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: white;
+          flex-direction: column;
+          padding: 1rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          gap: 1rem;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .calculator-container {
+          padding: 2rem;
+        }
+
+        .calculator-header h1 {
+          font-size: 2rem;
+        }
+
+        .nav-container {
+          padding: 0 1rem;
+        }
+
+        .main-content {
+          padding: 1rem;
+          margin-top: 90px;
+        }
+
+        .change-breakdown {
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">My Web Projects</a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="converter.html">Converter</a></li>
+          <li><a href="grading.html">Grading</a></li>
+          <li>
+            <a href="calculator.html" class="active">Calculator Change</a>
+          </li>
+          <li><a href="geolocation.html">Geolocation</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <div class="calculator-container">
+        <div class="calculator-header">
+          <h1>Change Calculator</h1>
+          <p>Calculate optimal change breakdown in Thai Baht</p>
+        </div>
+
+        <div class="currency-info">
+          <h4>Thai Baht Denominations</h4>
+          <div class="denominations-grid">
+            <div>₿1000</div>
+            <div>₿500</div>
+            <div>₿100</div>
+            <div>₿50</div>
+            <div>₿20</div>
+            <div>₿10</div>
+            <div>₿5</div>
+            <div>₿2</div>
+            <div>₿1</div>
+          </div>
+        </div>
+
+        <form id="calculatorForm">
+          <div class="form-group">
+            <label for="amountInput">Enter Amount (฿):</label>
+            <input
+              type="number"
+              id="amountInput"
+              placeholder="Enter amount in Thai Baht"
+              min="1"
+              step="1"
+            />
+            <div class="error-message" id="errorMsg"></div>
+          </div>
+
+          <button type="submit" class="calculate-btn">Calculate Change</button>
+        </form>
+
+        <div class="result-display" id="result">
+          <h3>Change Breakdown</h3>
+          <div class="change-breakdown" id="changeBreakdown"></div>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Home</a>
+      </div>
+    </main>
+
+    <script>
+      function toggleMobileMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+
+      function calculateChange() {
+        const amountInput = document.getElementById("amountInput");
+        const amount = parseInt(amountInput.value);
+        const errorMsg = document.getElementById("errorMsg");
+        const result = document.getElementById("result");
+        const changeBreakdown = document.getElementById("changeBreakdown");
+
+        // Clear previous error and result
+        errorMsg.classList.remove("show");
+        result.classList.remove("show");
+        changeBreakdown.innerHTML = "";
+
+        // Validation
+        if (isNaN(amount) || amountInput.value.trim() === "") {
+          showError("Please enter a valid amount.");
+          return false;
+        }
+
+        if (amount <= 0) {
+          showError("Please enter a positive number greater than 0.");
+          return false;
+        }
+
+        if (!Number.isInteger(amount)) {
+          showError("Please enter a whole number (no decimal places).");
+          return false;
+        }
+
+        // Thai Baht denominations (from largest to smallest)
+        const denominations = [1000, 500, 100, 50, 20, 10, 5, 2, 1];
+        let remainingAmount = amount;
+        let hasChange = false;
+
+        denominations.forEach((denomination) => {
+          const count = Math.floor(remainingAmount / denomination);
+          if (count > 0) {
+            hasChange = true;
+            const noteItem = document.createElement("div");
+            noteItem.className = "note-item";
+            noteItem.innerHTML = `
+                        <span class="count">${count}×</span>
+                        <span class="denomination">฿${denomination}</span>
+                    `;
+            changeBreakdown.appendChild(noteItem);
+          }
+          remainingAmount %= denomination;
+        });
+
+        if (hasChange) {
+          result.classList.add("show");
+        }
+
+        return false;
+      }
+
+      function showError(message) {
+        const errorMsg = document.getElementById("errorMsg");
+        errorMsg.textContent = message;
+        errorMsg.classList.add("show");
+      }
+
+      // Initialize form handling
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("calculatorForm");
+        const amountInput = document.getElementById("amountInput");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          calculateChange();
+        });
+
+        // Auto-calculate on input change
+        amountInput.addEventListener("input", function () {
+          if (amountInput.value.trim() !== "") {
+            calculateChange();
+          } else {
+            document.getElementById("result").classList.remove("show");
+            document.getElementById("errorMsg").classList.remove("show");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

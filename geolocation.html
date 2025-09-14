@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KBU Distance Tracker - My Web Projects</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-blue: #2563eb;
+        --dark-blue: #1d4ed8;
+        --light-blue: #3b82f6;
+        --blue-50: #eff6ff;
+        --blue-100: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-900: #111827;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --danger-red: #dc2626;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: linear-gradient(135deg, var(--blue-50) 0%, #ffffff 100%);
+        min-height: 100vh;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--blue-100);
+        z-index: 1000;
+        padding: 1rem 0;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-primary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-blue);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .main-content {
+        margin-top: 100px;
+        padding: 2rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .location-container {
+        background: white;
+        border-radius: 12px;
+        padding: 3rem;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+        border: 1px solid var(--blue-100);
+        text-align: center;
+      }
+
+      .location-header {
+        margin-bottom: 3rem;
+      }
+
+      .location-header h1 {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+      }
+
+      .location-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .kbu-badge {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--dark-blue)
+        );
+        border-radius: 50%;
+        margin: 0 auto 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 800;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+      }
+
+      .location-btn {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 8px;
+        background: var(--primary-blue);
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .location-btn:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+      }
+
+      .location-btn:disabled {
+        background: var(--gray-100);
+        color: var(--text-secondary);
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading {
+        display: none;
+        margin: 2rem 0;
+      }
+
+      .loading.show {
+        display: block;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid var(--blue-100);
+        border-top: 4px solid var(--primary-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .result-display {
+        background: var(--blue-50);
+        border: 2px solid var(--blue-100);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        display: none;
+      }
+
+      .result-display.show {
+        display: block;
+      }
+
+      .result-display h3 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+
+      .distance-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary-blue);
+        margin: 1rem 0;
+      }
+
+      .distance-message {
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      .coordinates-info {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        text-align: left;
+      }
+
+      .coordinates-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .coordinate-item {
+        background: var(--gray-50);
+        padding: 1rem;
+        border-radius: 6px;
+      }
+
+      .coordinate-item h4 {
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .error-display {
+        background: #fee2e2;
+        border: 2px solid var(--danger-red);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        display: none;
+      }
+
+      .error-display.show {
+        display: block;
+      }
+
+      .error-display h3 {
+        color: var(--danger-red);
+        margin-bottom: 0.5rem;
+      }
+
+      .error-display p {
+        color: var(--danger-red);
+      }
+
+      .back-btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-blue);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background: white;
+          flex-direction: column;
+          padding: 1rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          gap: 1rem;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .location-container {
+          padding: 2rem;
+        }
+
+        .location-header h1 {
+          font-size: 2rem;
+        }
+
+        .nav-container {
+          padding: 0 1rem;
+        }
+
+        .main-content {
+          padding: 1rem;
+          margin-top: 90px;
+        }
+
+        .coordinates-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .distance-value {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">My Web Projects</a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="converter.html">Converter</a></li>
+          <li><a href="grading.html">Grading</a></li>
+          <li><a href="calculator.html">Calculator Change</a></li>
+          <li><a href="geolocation.html" class="active">Geolocation</a></li>
+        </ul>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <div class="location-container">
+        <div class="location-header">
+          <div class="kbu-badge">KBU</div>
+          <h1>Distance Tracker</h1>
+          <p>Real-time location tracking to Kasem Bundit University</p>
+        </div>
+
+        <button
+          class="location-btn"
+          id="locationBtn"
+          onclick="getCurrentLocation()"
+        >
+          📍 Get My Location
+        </button>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <div class="loading-text">Acquiring GPS coordinates...</div>
+        </div>
+
+        <div class="result-display" id="result">
+          <h3>Distance Result</h3>
+          <div class="distance-value" id="distanceValue"></div>
+          <div class="distance-message" id="distanceMessage"></div>
+
+          <div class="coordinates-info">
+            <div class="coordinates-grid">
+              <div class="coordinate-item">
+                <h4>📍 Your Position</h4>
+                <div id="userCoordinates"></div>
+              </div>
+              <div class="coordinate-item">
+                <h4>🏫 KBU Position</h4>
+                <div id="kbuCoordinates">
+                  Lat: 13.8037877°<br />
+                  Lon: 100.7368277°
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                margin-top: 1rem;
+                text-align: center;
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+              "
+              id="lastUpdated"
+            ></div>
+          </div>
+        </div>
+
+        <div class="error-display" id="error">
+          <h3>🚫 Location Access Required</h3>
+          <p>
+            Please enable location permissions and try again to calculate your
+            distance from KBU.
+          </p>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Home</a>
+      </div>
+    </main>
+
+    <script>
+      // Kasem Bundit University coordinates
+      const KBU_LAT = 13.8037877;
+      const KBU_LON = 100.7368277;
+
+      function toggleMobileMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+
+      // Convert degrees to radians
+      function toRadians(degrees) {
+        return degrees * (Math.PI / 180);
+      }
+
+      // Calculate distance using Haversine formula
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371.0088; // Earth's radius in kilometers
+        const φ1 = toRadians(lat1);
+        const φ2 = toRadians(lat2);
+        const Δφ = toRadians(lat2 - lat1);
+        const Δλ = toRadians(lon2 - lon1);
+
+        const a =
+          Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+          Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // Distance in kilometers
+      }
+
+      function getCurrentLocation() {
+        const btn = document.getElementById("locationBtn");
+        const loading = document.getElementById("loading");
+        const result = document.getElementById("result");
+        const error = document.getElementById("error");
+
+        // Reset display states
+        result.classList.remove("show");
+        error.classList.remove("show");
+
+        // Check if geolocation is supported
+        if (!navigator.geolocation) {
+          showError(
+            "🚫 Geolocation Unavailable",
+            "Your browser or device doesn't support location services."
+          );
+          return;
+        }
+
+        // Show loading state
+        btn.disabled = true;
+        btn.textContent = "🛰️ GPS Active...";
+        loading.classList.add("show");
+
+        // Geolocation options
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0,
+        };
+
+        navigator.geolocation.getCurrentPosition(
+          // Success callback
+          function (position) {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+            const accuracy = Math.round(position.coords.accuracy);
+            const timestamp = new Date(position.timestamp);
+
+            // Calculate distance to KBU
+            const distance = calculateDistance(
+              userLat,
+              userLon,
+              KBU_LAT,
+              KBU_LON
+            );
+
+            // Generate proximity message
+            let proximityMessage = "";
+            if (distance < 0.1) {
+              proximityMessage = "🎉 You're practically at KBU!";
+            } else if (distance < 1) {
+              proximityMessage = "🚶 Just a short walk to campus!";
+            } else if (distance < 5) {
+              proximityMessage = "🚗 Quick drive to university!";
+            } else if (distance < 20) {
+              proximityMessage = "🛣️ Reasonable commute distance!";
+            } else {
+              proximityMessage = "✈️ Quite far from campus!";
+            }
+
+            // Display results
+            document.getElementById("distanceValue").textContent =
+              distance.toFixed(3) + " KM";
+            document.getElementById("distanceMessage").innerHTML = `
+                        <strong>You are ${distance.toFixed(
+                          3
+                        )} KM away from Kasem Bundit University!</strong><br>
+                        <small style="color: var(--text-secondary);">${proximityMessage}</small>
+                    `;
+            document.getElementById("userCoordinates").innerHTML = `
+                        Lat: ${userLat.toFixed(8)}°<br>
+                        Lon: ${userLon.toFixed(8)}°
+                    `;
+            document.getElementById(
+              "lastUpdated"
+            ).textContent = `Last updated: ${timestamp.toLocaleTimeString()}`;
+
+            // Show result
+            loading.classList.remove("show");
+            result.classList.add("show");
+            btn.disabled = false;
+            btn.textContent = "🔄 Refresh Location";
+          },
+          // Error callback
+          function (err) {
+            loading.classList.remove("show");
+            btn.disabled = false;
+            btn.textContent = "📍 Get My Location";
+
+            let errorTitle = "";
+            let errorMessage = "";
+
+            switch (err.code) {
+              case err.PERMISSION_DENIED:
+                errorTitle = "🚫 Location Permission Denied";
+                errorMessage =
+                  "Please enable location access in your browser settings and refresh the page.";
+                break;
+              case err.POSITION_UNAVAILABLE:
+                errorTitle = "📡 GPS Signal Lost";
+                errorMessage =
+                  "Unable to determine your position. Please ensure GPS is enabled and try again.";
+                break;
+              case err.TIMEOUT:
+                errorTitle = "⏰ Location Timeout";
+                errorMessage =
+                  "GPS acquisition took too long. Please try again in a few moments.";
+                break;
+              default:
+                errorTitle = "⚠ Location Error";
+                errorMessage =
+                  "An unexpected error occurred. Please refresh and try again.";
+                break;
+            }
+
+            showError(errorTitle, errorMessage);
+          },
+          options
+        );
+      }
+
+      function showError(title, message) {
+        const error = document.getElementById("error");
+        error.innerHTML = `<h3>${title}</h3><p>${message}</p>`;
+        error.classList.add("show");
+      }
+    </script>
+  </body>
+</html>
